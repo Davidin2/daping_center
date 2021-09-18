@@ -1,25 +1,30 @@
+require('dotenv').config();
 const deleteLogs = async (req, res, next) => {
     var fs = require('fs');
+    var respuesta=""
     try {
         //añadimos a este array todos los ficheros a borrar
-        var filePath = [
-        '/home/david/hackaboss/daping_center/borrame',
-        '/home/david/hackaboss/daping_center/borrame2',
-        '/home/david/hackaboss/daping_center/borrame3']; 
+        const { FILEPATHS } = process.env;
+        filepath=FILEPATHS.split(',');
         
-    for (let index = 0; index < filePath.length; index++) {
-        if(fs.existsSync(filePath[index])){
-            console.log(`El archivo ${filePath[index]} EXISTE y lo borramos!`);
-            fs.unlinkSync(filePath[index]); 
+    for (let index = 0; index < filepath.length; index++) {
+        if(fs.existsSync(filepath[index])){
+            respuesta+=`El archivo ${filepath[index]} EXISTE y lo borramos!\n`;       
+            fs.unlinkSync(filepath[index]); 
             }else{
-            console.log(`El archivo ${filePath[index]} NO EXISTE!`);
+            respuesta+=`El archivo ${filepath[index]} NO EXISTE!\n`;
             }
         }
+    console.log(respuesta);
         
     } catch (error) {
         next(error);
     }
-    res.send('Ficheros borrados ');
+    respuesta=respuesta.replace(/\n/g, "<br />");
+
+  
+
+    res.send(respuesta);
 };
   
 module.exports = deleteLogs;

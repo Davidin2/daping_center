@@ -13,7 +13,7 @@ const {
 
 
 // Logger..
-app.use(morgan('dev'));
+app.use(morgan(':remote-addr :method :url :status'));
 
 // Traduce el body y lo transforma en un objeto JS.
 app.use(express.json());
