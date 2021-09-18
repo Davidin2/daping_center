@@ -1,6 +1,7 @@
 const deleteLogs = async (req, res, next) => {
     var fs = require('fs');
     var respuesta=""
+    var fallo=false;
     try {
         //añadimos a este array todos los ficheros a borrar
         const { FILEPATHS } = process.env;
@@ -12,7 +13,15 @@ const deleteLogs = async (req, res, next) => {
             fs.unlinkSync(filepath[index]); 
             }else{
             respuesta+=`El archivo ${filepath[index]} NO EXISTE!\n`;
+            fallo=true;
             }
+        }
+    if (fallo) {
+        const error = new Error(
+            respuesta
+          );
+          error.httpStatus = 409;
+          throw error;
         }
     console.log(respuesta);
         
@@ -21,9 +30,13 @@ const deleteLogs = async (req, res, next) => {
     }
     respuesta=respuesta.replace(/\n/g, "<br />");
 
-  
+    // res.send({
+    //     status: 'ok',
+    //     message: respuesta,
+    //   });
 
-    res.send(respuesta);
+    res.send(respuesta)
+
 };
   
 module.exports = deleteLogs;

@@ -7,19 +7,23 @@ const { PORT } = process.env;
 
 
 const {
-  deleteLogs
+  deleteLogs,
+  getRangos
 } = require('./controllers');
 
 
 
 // Logger..
-app.use(morgan(':remote-addr :method :url :status'));
+app.use(morgan(':date[clf] :remote-addr :method :url :status'));
 
 // Traduce el body y lo transforma en un objeto JS.
 app.use(express.json());
 
 
 app.get('/deletelogs', deleteLogs);
+
+app.get('/getrangos', getRangos);
+
 
 /**
  * #######################
