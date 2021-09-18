@@ -1,4 +1,3 @@
-require('dotenv').config();
 const deleteLogs = async (req, res, next) => {
     var fs = require('fs');
     var respuesta=""
